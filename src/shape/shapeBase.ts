@@ -4,13 +4,13 @@
  */
 import GGroup from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces'
-import deepMix from '@antv/util/lib/deep-mix';
-import each from '@antv/util/lib/each'
 import { ShapeOptions, ILabelConfig } from '../interface/shape'
 import { IPoint, Item, LabelStyle, ModelConfig, ShapeStyle } from '../types';
 import { cloneDeep, get, merge } from 'lodash'
 import Global from '../global'
 import { mat3, transform } from '@antv/matrix-util';
+import { deepMix, each, mix } from '@antv/util';
+
 
 const CLS_SHAPE_SUFFIX = '-shape'
 const CLS_LABEL_SUFFIX = '-label'
@@ -141,7 +141,8 @@ export const shapeBase: ShapeOptions = {
     const group = item.getContainer()
     const shapeClassName = this.itemType + CLS_SHAPE_SUFFIX
     const shape = group.find(element => element.get('className') === shapeClassName)
-    const shapeStyle = deepMix({}, shape.attr(), cfg.style);
+
+    const shapeStyle = mix({}, shape.attr(), cfg.style);
     if (shape) {
       shape.attr(shapeStyle)
     }

@@ -1,12 +1,11 @@
 import { Point } from '@antv/g-base/lib/types';
 import Group from '@antv/g-canvas/lib/group'
-import { deepMix, each } from '@antv/util'
-import { IShapeBase, Item, ModelConfig, IPoint } from '../../types';
+import { mix, each } from '@antv/util'
+import { ModelConfig } from '../../types';
 import { pointsToPolygon } from '../../util/path'
 import Global from '../../global'
 import Shape from '../shape'
 import { getPathWithBorderRadiusByPolyline, getPolylinePoints, simplifyPolyline } from './polyline-util';
-import Util from '../../util';
 
 const CLS_SHAPE_SUFFIX = '-shape';
 const CLS_LABEL_SUFFIX = '-label';
@@ -48,7 +47,7 @@ Shape.registerEdge('polyline', {
       stroke: cfg.color
     };
 
-    const style = deepMix({}, defaultStyle, strokeStyle, cfg.style);
+    const style = mix({}, defaultStyle, strokeStyle, cfg.style);
     cfg = this.getPathPoints(cfg);
 
     this.radius = style.radius;
@@ -74,9 +73,10 @@ Shape.registerEdge('polyline', {
 
     
     const path = this.getPath(points);
-    const attrs = deepMix({}, Global.defaultEdge.style, style, {
-      lineWidth: cfg.size
-    }, { path });
+    const attrs = mix({}, Global.defaultEdge.style, style, {
+      lineWidth: cfg.size,
+      path
+    });
     return attrs;
   },
   getPath(points: Point[]): Array<Array<string | number>> | string {

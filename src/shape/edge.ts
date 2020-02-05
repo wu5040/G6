@@ -7,7 +7,7 @@
 import { Point } from '@antv/g-base/lib/types';
 import GGroup from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces';
-import { deepMix, each, isNil } from '@antv/util';
+import { deepMix, each, isNil, mix } from '@antv/util';
 import { ILabelConfig, ShapeOptions } from '../interface/shape';
 import { EdgeConfig, EdgeData, IPoint, LabelStyle, ShapeStyle, Item } from '../types';
 import { getLabelPosition, getLoopCfgs } from '../util/graphic';
@@ -77,7 +77,7 @@ const singleEdge: ShapeOptions = {
       stroke: cfg.color,
     };
     // 如果设置了color，则覆盖默认的stroke属性
-    const style = deepMix({}, defaultStyle, strokeStyle, cfg.style);
+    const style = mix({}, defaultStyle, strokeStyle, cfg.style);
 
     const size = cfg.size || Global.defaultEdge.size;
     cfg = this.getPathPoints(cfg);
@@ -124,7 +124,8 @@ const singleEdge: ShapeOptions = {
     // 添加结束点
     points.push(endPoint);
     const path = this.getPath(points);
-    const style = deepMix({}, strokeStyle, shape.attr(), {
+
+    const style = mix(strokeStyle, shape.attr(), {
       lineWidth: size,
       path
     }, cfg.style);

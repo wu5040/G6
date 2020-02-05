@@ -1,6 +1,6 @@
 import GGroup from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces'
-import deepMix from '@antv/util/lib/deep-mix';
+import { mix } from '@antv/util'
 import { Item, NodeConfig } from '../../types';
 import Global from '../../global'
 import Shape from '../shape'
@@ -53,7 +53,7 @@ Shape.registerNode('ellipse', {
   drawShape(cfg: NodeConfig, group: GGroup): IShape {
     const { icon: defaultIcon } = this.options;
     const style = this.getShapeStyle(cfg);
-    const icon = deepMix({}, defaultIcon, cfg.icon);
+    const icon = mix({}, defaultIcon, cfg.icon);
 
     const keyShape = group.addShape('ellipse', {
       attrs: style,
@@ -88,7 +88,7 @@ Shape.registerNode('ellipse', {
    */
   drawLinkPoints(cfg: NodeConfig, group: GGroup) {
     const { linkPoints: defaultLinkPoints } = this.options;
-    const linkPoints = deepMix({}, defaultLinkPoints, cfg.linkPoints);
+    const linkPoints = mix({}, defaultLinkPoints, cfg.linkPoints);
 
     const { top, left, right, bottom, size: markSize,
       ...markStyle } = linkPoints;
@@ -167,7 +167,7 @@ Shape.registerNode('ellipse', {
       stroke: cfg.color
     };
     // 如果设置了color，则覆盖默认的stroke属性
-    const style = deepMix({}, defaultStyle, strokeStyle, cfg.style);
+    const style = mix({}, defaultStyle, strokeStyle, cfg.style);
     const size = this.getSize(cfg);
     const rx = size[0] / 2;
     const ry = size[1] / 2;
@@ -191,7 +191,8 @@ Shape.registerNode('ellipse', {
     };
     // 与 getShapeStyle 不同在于，update 时需要获取到当前的 style 进行融合。即新传入的配置项中没有涉及的属性，保留当前的配置。
     const keyShape = item.get('keyShape');
-    const style = deepMix({}, defaultStyle, keyShape.attr(), strokeStyle, cfg.style);
+    let style = mix({}, defaultStyle, keyShape.attr(), strokeStyle);
+    style = mix(style, cfg.style);
 
     this.updateShape(cfg, item, style, true);
     this.updateLinkPoints(cfg, group);

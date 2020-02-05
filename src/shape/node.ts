@@ -4,8 +4,7 @@
  */
 import GGroup from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces'
-import { isArray, isNil, isEqual } from '@antv/util/lib'
-import deepMix from '@antv/util/lib/deep-mix';
+import { isArray, isNil, mix } from '@antv/util';
 import { ILabelConfig, ShapeOptions } from '../interface/shape'
 import { Item, LabelStyle, NodeConfig } from '../types';
 import Global from '../global'
@@ -141,7 +140,7 @@ const singleNode: ShapeOptions = {
     }
     if (!currentLinkPoints) currentLinkPoints = defaultLinkPoints;
 
-    const linkPoints = deepMix({}, currentLinkPoints, cfg.linkPoints);
+    const linkPoints = mix({}, currentLinkPoints, cfg.linkPoints);
 
     const { fill: markFill, stroke: markStroke, lineWidth: borderWidth } = linkPoints;
     let markSize = linkPoints.size / 2;
@@ -261,12 +260,12 @@ const singleNode: ShapeOptions = {
   updateIcon(cfg, item) {
     const group = item.getContainer();
     const { icon: defaultIcon } = this.options;
-    const icon = deepMix({}, defaultIcon, cfg.icon);
+    const icon = mix({}, defaultIcon, cfg.icon);
     const { show } = cfg.icon ? cfg.icon : { show: undefined };
     const iconShape = group.find(element => element.get('className') === `${this.type}-icon`)
     if (iconShape) { // 若原先存在 icon
       if (show || show === undefined) { // 若传入 show: true, 或没有设置，则更新原有的 icon 样式
-        const iconConfig = deepMix({}, defaultIcon, iconShape.attr(), cfg.icon);
+        const iconConfig = mix({}, defaultIcon, iconShape.attr(), cfg.icon);
         const { width: w, height: h } = iconConfig;
         iconShape.attr({
           ...iconConfig,

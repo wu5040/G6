@@ -1,5 +1,5 @@
 import Shape from '../shape'
-import deepMix from '@antv/util/lib/deep-mix';
+import { mix } from '@antv/util'
 import Global from '../../global'
 import GGroup from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces'
@@ -52,7 +52,7 @@ Shape.registerNode('triangle', {
   drawShape(cfg: NodeConfig, group: GGroup): IShape {
     const { icon: defaultIcon, direction: defaultDirection } = this.options;
     const style = this.getShapeStyle(cfg);
-    const icon = deepMix({}, defaultIcon, cfg.icon);
+    const icon = mix({}, defaultIcon, cfg.icon);
 
     const direction = cfg.direction || defaultDirection;
 
@@ -97,7 +97,7 @@ Shape.registerNode('triangle', {
    */
   drawLinkPoints(cfg: NodeConfig, group: GGroup) {
     const { linkPoints: defaultLinkPoints, direction: defaultDirection } = this.options;
-    const linkPoints = deepMix({}, defaultLinkPoints, cfg.linkPoints);
+    const linkPoints = mix({}, defaultLinkPoints, cfg.linkPoints);
 
     const direction = cfg.direction || defaultDirection;
 
@@ -269,7 +269,7 @@ Shape.registerNode('triangle', {
       stroke: cfg.color
     };
     // 如果设置了color，则覆盖默认的stroke属性
-    const style = deepMix({}, defaultStyle, strokeStyle, cfg.style);
+    const style = mix({}, defaultStyle, strokeStyle, cfg.style);
     const path = this.getPath(cfg);
     const styles = { path, ...style };
     return styles;
@@ -285,7 +285,8 @@ Shape.registerNode('triangle', {
     };
     // 与 getShapeStyle 不同在于，update 时需要获取到当前的 style 进行融合。即新传入的配置项中没有涉及的属性，保留当前的配置。
     const keyShape = item.get('keyShape');
-    const style = deepMix({}, defaultStyle, keyShape.attr(), strokeStyle, cfg.style);
+    let style = mix({}, defaultStyle, keyShape.attr(), strokeStyle);
+    style = mix(style, cfg.style);
     
 
     this.updateShape(cfg, item, style, true);
@@ -312,7 +313,7 @@ Shape.registerNode('triangle', {
       currentLinkPoints = existLinkPoint.attr();
     }
 
-    const linkPoints = deepMix({}, currentLinkPoints, cfg.linkPoints);
+    const linkPoints = mix({}, currentLinkPoints, cfg.linkPoints);
 
     const { fill: markFill, stroke: markStroke, lineWidth: borderWidth } = linkPoints;
     let markSize = linkPoints.size;
