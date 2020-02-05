@@ -5,6 +5,7 @@ import NodeAmount from './component/node-amount'
 import Erdos from './component/erdos'
 import NetScience from './component/netscience'
 import Eva from './component/eva'
+import RtOccupy from './component/rt-occupy'
 
 export default { title: 'Performance' };
 
@@ -21,4 +22,7 @@ storiesOf('Performance', module)
   ))
   .add('eva data', () => (  // 一个 add 表示添加一个 story
     <Eva />
+  ))
+  .add('rt occupy data', () => (  // 一个 add 表示添加一个 story
+    <RtOccupy />
   ))
