@@ -63,6 +63,11 @@ const Eva = () => {
             fill: 'steelblue',
             stroke: '#000',
             lineWidth: 1
+          },
+          hover: {
+            fill: 'red',
+            stroke: '#000',
+            lineWidth: 1
           }
         },
         modes: {
@@ -90,6 +95,14 @@ const Eva = () => {
         // console.log(data.nodes);
         graph.data(data);
         graph.render();
+        graph.on('node:mouseenter', e => {
+          const { item } = e;
+          graph.setItemState(item, 'hover', true);
+        });
+        graph.on('node:mouseleave', e => {
+          const { item } = e;
+          graph.setItemState(item, 'hover', false);
+        });
 
         /* normalize */
         // let cx = 0, cy = 0;
