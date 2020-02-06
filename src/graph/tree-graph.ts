@@ -89,12 +89,12 @@ export default class TreeGraph  extends Graph implements ITreeGraph {
     if (parent) {
       node.set('parent', parent);
       if (animate) {
-        const origin = parent.get('origin');
+        const origin = parent.get('originAttrs');
         if (origin) {
-          node.set('origin', origin);
+          node.set('originAttrs', origin);
         } else {
           const parentModel = parent.getModel();
-          node.set('origin', {
+          node.set('originAttrs', {
             x: parentModel.x,
             y: parentModel.y
           });
@@ -163,7 +163,7 @@ export default class TreeGraph  extends Graph implements ITreeGraph {
     const model = current.getModel();
     if (animate) {
       // 如果有动画，先缓存节点运动再更新节点
-      current.set('origin', {
+      current.set('originAttrs', {
         x: model.x,
         y: model.y
       });
@@ -193,7 +193,7 @@ export default class TreeGraph  extends Graph implements ITreeGraph {
     if (animate) {
       const model = node.getModel();
       node.set('to', to);
-      node.set('origin', { x: model.x, y: model.y });
+      node.set('originAttrs', { x: model.x, y: model.y });
       self.get('removeList').push(node);
     } else {
       self.removeItem(node);
@@ -395,7 +395,7 @@ export default class TreeGraph  extends Graph implements ITreeGraph {
 
         // 只有当存在node的时候才执行
         if (node) {
-          let origin = node.get('origin');
+          let origin = node.get('originAttrs');
           const model = node.get('model');
 
           if (!origin) {
@@ -403,7 +403,7 @@ export default class TreeGraph  extends Graph implements ITreeGraph {
               x: model.x,
               y: model.y
             };
-            node.set('origin', origin);
+            node.set('originAttrs', origin);
           }
 
           if (onFrame) {
@@ -419,7 +419,7 @@ export default class TreeGraph  extends Graph implements ITreeGraph {
 
       each(self.get('removeList'), node => {
         const model = node.getModel();
-        const from = node.get('origin');
+        const from = node.get('originAttrs');
         const to = node.get('to');
         model.x = from.x + (to.x - from.x) * ratio;
         model.y = from.y + (to.y - from.y) * ratio;
@@ -431,7 +431,7 @@ export default class TreeGraph  extends Graph implements ITreeGraph {
       easing: animateCfg.ease,
       callback: () => {
         each(self.getNodes(), node => {
-          node.set('origin', null);
+          node.set('originAttrs', null);
         });
   
         each(self.get('removeList'), node => {
