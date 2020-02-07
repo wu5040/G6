@@ -194,12 +194,12 @@ const ComplexTree = () => {
             //   }
             // }
           },
-          {
-            type: 'tooltip',
-            formatText: function formatText(data) {
-              return `<div>${  data.name  }</div>`;
-            }
-          },
+          // {
+          //   type: 'tooltip',
+          //   formatText: function formatText(data) {
+          //     return `<div>${  data.name  }</div>`;
+          //   }
+          // },
           'drag-canvas', 'zoom-canvas' ]
         },
         defaultNode: {
@@ -210,6 +210,11 @@ const ComplexTree = () => {
           type: 'tree-edge',
           style: {
             stroke: '#A3B1BF'
+          }
+        },
+        nodeStateStyles: {
+          hover: {
+            opacity: 0.5
           }
         },
         layout: {
@@ -232,7 +237,8 @@ const ComplexTree = () => {
               y: 0,
               width,
               height
-            }
+            },
+            className: 'container'
           });
           if (!isRoot) {
             /* 左边的小圆点 */
@@ -255,7 +261,8 @@ const ComplexTree = () => {
               fill: config.bgColor,
               stroke: config.borderColor,
               radius: 2
-            }
+            },
+            className: 'bg-rect'
           });
       
           /* 左边的粗线 */
@@ -373,6 +380,14 @@ const ComplexTree = () => {
                 }
                 shape.attr('opacity', 1);
               });
+            }
+          } else if (name === 'hover') {
+            const bgRect = group.find(element => element.get('className') ==='bg-rect')
+            if (value) {
+              bgRect.attr('opacity', 0.1);
+            } else {
+              bgRect.attr('opacity', 1);
+
             }
           }
           graph.setAutoPaint(true);
@@ -749,7 +764,7 @@ const ComplexTree = () => {
       }, 'cubic-horizontal');
       graph.on('beforepaint', function() {
         const topLeft = graph.getPointByCanvas(0, 0);
-        const bottomRight = graph.getPointByCanvas(1000, 600);
+        const bottomRight = graph.getPointByCanvas(1000, 1000);
         graph.getNodes().forEach(function(node) {
           const model = node.getModel();
           if (model.x < topLeft.x - 200 || model.x > bottomRight.x || model.y < topLeft.y || model.y > bottomRight.y) {
@@ -782,15 +797,15 @@ const ComplexTree = () => {
         });
     }
 
-    // graph.on('node:mouseenter', evt => {
-    //   const { item } = evt
-    //   graph.setItemState(item, 'hover', true)
-    // })
+    graph.on('node:mouseenter', evt => {
+      const { item } = evt
+      graph.setItemState(item, 'hover', true)
+    })
 
-    // graph.on('node:mouseleave', evt => {
-    //   const { item } = evt
-    //   graph.setItemState(item, 'hover', false)
-    // })
+    graph.on('node:mouseleave', evt => {
+      const { item } = evt
+      graph.setItemState(item, 'hover', false)
+    })
   });
   return (
     <div ref={container}></div>

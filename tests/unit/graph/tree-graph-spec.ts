@@ -266,11 +266,11 @@ describe('update child', () => {
   graph.render()
 
   it('updateChild & parent is not undefined', () => {
-    const child = { id: 'SubTreeNode3.1', x: 150, y: 150, type: 'rect', children: [{ x: 250, y: 150, id: 'SubTreeNode3.1.1' }] };
+    const child = { id: 'SubTreeNode3.1', label: 'SubTreeNode3.1', x: 150, y: 150, type: 'rect', children: [{ x: 250, y: 150, id: 'SubTreeNode3.1.1', label: 'SubTreeNode3.1.1' }] };
 
-    // 第一种情况，parent存在，添加的数据不存在
+    // // 第一种情况，parent存在，添加的数据不存在
     graph.updateChild(child, 'SubTreeNode3')
-    // 更新以后，SubTreeNode3.1.1 节点后会有子元素
+    // // 更新以后，SubTreeNode3 节点后会有子元素
     const subNode = graph.findById('SubTreeNode3')
     const children = subNode.get('children')
     expect(children).not.toBe(undefined)
@@ -288,6 +288,7 @@ describe('update child', () => {
     // 第二种情况，parent存在，添加的数据存在
     const data = {
       id: 'SubTreeNode3.1',
+      label: 'SubTreeNode3.1',
       x: 120,
       y: 156,
       type: 'circle'

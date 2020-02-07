@@ -160,6 +160,12 @@ export default class TreeGraph  extends Graph implements ITreeGraph {
         }
       }
     }
+    let oriX = undefined;
+    let oriY = undefined;
+    if (current.get('originAttrs')) {
+      oriX = current.get('originAttrs').x;
+      oriY = current.get('originAttrs').y;
+    }
     const model = current.getModel();
     if (animate) {
       // 如果有动画，先缓存节点运动再更新节点
@@ -169,7 +175,9 @@ export default class TreeGraph  extends Graph implements ITreeGraph {
       });
     }
     current.set('model', data.data);
-    current.updatePosition({ x: data.x, y: data.y });
+    if (oriX !== data.x || oriY !== data.y) {
+      current.updatePosition({ x: data.x, y: data.y });
+    }
   }
 
   /**
