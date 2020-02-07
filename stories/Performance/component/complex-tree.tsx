@@ -226,7 +226,6 @@ const ComplexTree = () => {
           getHGap: () => 50
         }
       });
-      graph.get('canvas').set('localRefresh', false);
       /* 精简节点和复杂节点共用的一些方法 */
       const nodeBasicMethod = {
         createNodeBox: function createNodeBox(group, config, width, height, isRoot) {
@@ -384,9 +383,9 @@ const ComplexTree = () => {
           } else if (name === 'hover') {
             const bgRect = group.find(element => element.get('className') ==='bg-rect')
             if (value) {
-              bgRect.attr('opacity', 0.1);
+              bgRect.attr('fillOpacity', 0.1);
             } else {
-              bgRect.attr('opacity', 1);
+              bgRect.attr('fillOpacity', 1);
 
             }
           }
@@ -762,28 +761,28 @@ const ComplexTree = () => {
         },
         update: null
       }, 'cubic-horizontal');
-      graph.on('beforepaint', function() {
-        const topLeft = graph.getPointByCanvas(0, 0);
-        const bottomRight = graph.getPointByCanvas(1000, 1000);
-        graph.getNodes().forEach(function(node) {
-          const model = node.getModel();
-          if (model.x < topLeft.x - 200 || model.x > bottomRight.x || model.y < topLeft.y || model.y > bottomRight.y) {
-            node.getContainer().hide();
-          } else {
-            node.getContainer().show();
-          }
-        });
-        const edges = graph.getEdges();
-        edges.forEach(function(edge) {
-          const sourceNode = edge.get('sourceNode');
-          const targetNode = edge.get('targetNode');
-          if (!sourceNode.get('visible') && !targetNode.get('visible')) {
-            edge.hide();
-          } else {
-            edge.show();
-          }
-        });
-      });
+      // graph.on('beforepaint', function() {
+      //   const topLeft = graph.getPointByCanvas(0, 0);
+      //   const bottomRight = graph.getPointByCanvas(1000, 1000);
+      //   graph.getNodes().forEach(function(node) {
+      //     const model = node.getModel();
+      //     if (model.x < topLeft.x - 200 || model.x > bottomRight.x || model.y < topLeft.y || model.y > bottomRight.y) {
+      //       node.getContainer().hide();
+      //     } else {
+      //       node.getContainer().show();
+      //     }
+      //   });
+      //   const edges = graph.getEdges();
+      //   edges.forEach(function(edge) {
+      //     const sourceNode = edge.get('sourceNode');
+      //     const targetNode = edge.get('targetNode');
+      //     if (!sourceNode.get('visible') && !targetNode.get('visible')) {
+      //       edge.hide();
+      //     } else {
+      //       edge.show();
+      //     }
+      //   });
+      // });
       
       
       fetch('https://gw.alipayobjects.com/os/basement_prod/dd089904-664c-4699-9593-e0df409558c0.json')
