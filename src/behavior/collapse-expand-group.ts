@@ -20,7 +20,7 @@ export default {
     let trigger: string;
     // 检测输入是否合法
     if (ALLOW_EVENTS.includes(this.trigger)) {
-      ({ trigger } = this.trigger);
+      (trigger = this.trigger);
     } else {
       trigger = DEFAULT_TRIGGER;
       // eslint-disable-next-line no-console
@@ -33,7 +33,6 @@ export default {
     };
   },
   onGroupClick(evt: IG6GraphEvent) {
-    console.log('on group click')
     const { target } = evt;
     const { graph } = this;
 
