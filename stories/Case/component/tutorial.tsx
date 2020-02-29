@@ -497,6 +497,7 @@ const Tutorial = () => {
         size: [100, 100],
         className: 'minimap',
         type: 'delegate',
+        fitView: true,
       });
 
       // 实例化 Grid 插件
@@ -536,7 +537,7 @@ const Tutorial = () => {
           },
         },
         layout: {
-          type: 'dagre',
+          type: 'force',
           controlPoints: false,
           linkDistance: 100,
           preventOverlap: true,
@@ -701,7 +702,10 @@ const Tutorial = () => {
         //   graph.setItemState(edgeItem, 'click', true);
         // });
 
-
+        graph.on('afterlayout', e => {
+          graph.fitView(40);
+          graph.fitView(40);
+        });
 
       };
       main();

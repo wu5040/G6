@@ -15,6 +15,7 @@ import Grid from './grid';
 import MDS from './mds';
 import Radial from './radial/radial';
 import Random from './random';
+import Sankey from './sankey';
 
 const layouts = {
   circular: Circular,
@@ -26,6 +27,7 @@ const layouts = {
   mds: MDS,
   radial: Radial,
   random: Random,
+  sankey: Sankey,
 };
 
 // 注册布局
