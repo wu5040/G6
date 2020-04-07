@@ -120,18 +120,9 @@ export default class SankeyLayout extends BaseLayout {
     const nodeWidth = self.nodeWidth || (self.width - widthPadding - (levelsCount - 1) * self.ranksep) / levelsCount;
     // the sum of the weights comes from the first level
     let weightSum = 0;
-    // let minWeightInLevels0 = Infinity;
-    // let maxWeightInLevels0 = -Infinity;
     self.levels[0].forEach(node => {
       weightSum += node.outWeight;
-      // if (minWeightInLevels0 > node.outWeight) {
-      //   minWeightInLevels0 = node.outWeight;
-      // }
-      // if (maxWeightInLevels0 < node.outWeight) {
-      //   maxWeightInLevels0 = node.outWeight;
-      // }
     });
-    console.log('self.levelMaxNodes',self.levelMaxNodes);
 
     const levelNodeNum = self.levelMaxNodes || self.levels[0].length;
     const layoutHeight = self.height - heightPadding - (self.levelMaxNodes - 1) * self.nodesep;
@@ -239,14 +230,6 @@ export default class SankeyLayout extends BaseLayout {
 
     // calculate the controlpoints for edges, if the widths of the two ends of an edge can be different
     cedges.forEach(edge => {
-      // edge.sourceControlPoints = [
-      //   { x: (edge.fourPoints[0].x + edge.fourPoints[2].x) / 2, y: edge.fourPoints[0].y },
-      //   { x: (edge.fourPoints[0].x + edge.fourPoints[2].x) / 2, y: edge.fourPoints[1].y }
-      // ];
-      // edge.targetControlPoints = [
-      //   { x: (edge.fourPoints[0].x + edge.fourPoints[2].x) / 2, y: edge.fourPoints[2].y },
-      //   { x: (edge.fourPoints[0].x + edge.fourPoints[2].x) / 2, y: edge.fourPoints[3].y }
-      // ];
       edge.controlPoints = [
         { x: (edge.fourPoints[0].x + edge.fourPoints[2].x) / 2, y: edge.fourPoints[0].y  },
         { x: (edge.fourPoints[0].x + edge.fourPoints[2].x) / 2, y: edge.fourPoints[2].y },
@@ -255,32 +238,19 @@ export default class SankeyLayout extends BaseLayout {
       ];
     });
 
-    // calculate the controlpoints for edges, if the edge is a simple cubic bezier curve with even width along it
-    // cedges.forEach(edge => {
-    //   edge.controlPoints = [
-    //     { x: (edge.sourcePoint.x + edge.targetPoint.x) / 2, y: edge.sourcePoint.y },
-    //     { x: (edge.sourcePoint.x + edge.targetPoint.x) / 2, y: edge.targetPoint.y }
-    //   ];
-    // })
-
     // copy the useful infomations to the origin data
     nodes.forEach((node, i) => {
       node.x = cnodes[i].x;
       node.y = cnodes[i].y;
-      // node.size = [ nodeWidth, cnodes[i].length ];
       node.style = {};
       node.style.width = nodeWidth;
       node.style.height = cnodes[i].length;
       node.anchorPoints = cnodes[i].anchorPoints;
     });
     edges.forEach((edge, i) => {
-      // edge.controlPoints = cedges[i].controlPoints;
       edge.size = cedges[i].size;
       edge.sourceAnchor = cedges[i].sourceAnchor;
       edge.targetAnchor = cedges[i].targetAnchor;
-      // edge.fourPoints = cedges[i].fourPoints;
-      // edge.controlPoints = cedges[i].controlPoints;
-      // edge.type = 'cubic';
     });
   }
   private autoLevels(nodes, nodeMap) {
